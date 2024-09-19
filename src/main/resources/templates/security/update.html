@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>udpate-user</title>
+    <style>
+        .text{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<form class="text" th:action="@{/update}" th:method="post">
+    <table>
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Old username</td>
+            <td>New username</td>
+            <td>New password</td>
+            <td>Roles</td>
+<!--            need roles-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th> <input readonly="readonly" th:field="${updUser.id}"></th>
+            <th th:text="${updUser.getUsername}"></th>
+            <th> <input th:field="${updUser.username}"> </th>
+            <th> <input type="text" th:field="${updUser.password}">  </th>
+            <th>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th th:object="${checkRole}">
+                            <label for="user">Role:</label>
+                            <input id="user" type="text"  th:field="${checkRole.role}">
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">Edit</button>
+</form>
+
+</body>
+</html>

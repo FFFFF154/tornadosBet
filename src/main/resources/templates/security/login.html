@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        .text{
+            text-align:center;
+        }
+
+    </style>
+</head>
+<body>
+<form class="text" th:action="@{/login-page}" th:object="${loginForm}" th:method="post">
+    <div>
+        <label for="login">Login</label>
+        <input id="login"  type="text" th:field="${loginForm.username}">
+        <br>
+        <br>
+        <label for="password">Password</label>
+        <input id="password"  type="password" th:field="${loginForm.password}">
+        <br>
+        <br>
+        <button type="submit" >LOGIN</button>
+        <br>
+        <br>
+        <a href="/registration">REGISTRATION</a>
+<!--        <form action="/registration" for="button"></form>-->
+<!--            <button id="button">REGISTRATION</button>-->
+    </div>
+</form>
+
+</body>
+</html>
