@@ -8,11 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.box.tornadosbet.dto.UserRole;
-import ru.box.tornadosbet.entity.User;
-import ru.box.tornadosbet.repository.RoleRepository;
-import ru.box.tornadosbet.repository.UserRepository;
+import ru.box.tornadosbet.entity.mysql.User;
+import ru.box.tornadosbet.repository.security.RoleRepository;
+import ru.box.tornadosbet.repository.security.UserRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service

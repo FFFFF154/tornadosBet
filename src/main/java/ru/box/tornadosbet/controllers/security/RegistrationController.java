@@ -1,4 +1,4 @@
-package ru.box.tornadosbet.controllers;
+package ru.box.tornadosbet.controllers.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.box.tornadosbet.entity.User;
+import ru.box.tornadosbet.entity.mysql.User;
 import ru.box.tornadosbet.service.UserService;
 
 @Controller

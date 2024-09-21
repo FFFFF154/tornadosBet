@@ -1,10 +1,8 @@
-package ru.box.tornadosbet.entity;
+package ru.box.tornadosbet.entity.mysql;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
@@ -12,6 +10,8 @@ import java.util.Set;
 @Entity
 @Table(name = "t_role")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role implements GrantedAuthority {
 
     @Id

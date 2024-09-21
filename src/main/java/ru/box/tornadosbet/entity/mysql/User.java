@@ -1,19 +1,19 @@
-package ru.box.tornadosbet.entity;
+package ru.box.tornadosbet.entity.mysql;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.box.tornadosbet.entity.mysql.Role;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "t_user")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

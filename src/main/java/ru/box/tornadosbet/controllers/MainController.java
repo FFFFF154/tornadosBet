@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @Slf4j
-public class MainController {
+public class MainController { //TODO дополнить боксёрами
+    //TODO Далее создать теоретический поединок
 
     @GetMapping("/welcome")
     public String welcome(){
