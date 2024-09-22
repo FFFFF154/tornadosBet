@@ -1,30 +1,30 @@
 package ru.box.tornadosbet.entity.postgresql;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity(name = "boxer")
-public class Boxer { //TODO добавить боксеров
+@Entity
+@Table(name = "boxer", schema = "boxing")
+public class Boxer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "firstName")
+
+    @Column(name = "firstname")
     private String firstName;
 
-    @Column(name = "secondName")
+    @Column(name = "secondname")
     private String secondName;
 
     @Column(name = "age")
-    private Integer age;
+    private Byte age;
 
     @Column(name = "photo")
-    private String photo; // TODO Посмотреть как реализовать в entity
+    private String photo;
 
     @Column(name = "height")
     private Double height;
@@ -38,7 +38,9 @@ public class Boxer { //TODO добавить боксеров
     @Column(name = "division")
     private String division;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id")//TODO рассмотреть ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "country_id")//TODO рассмотреть ManyToOne связь с таблицей country
     private Country country;
+
+
 }

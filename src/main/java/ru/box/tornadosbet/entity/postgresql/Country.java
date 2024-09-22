@@ -1,10 +1,15 @@
 package ru.box.tornadosbet.entity.postgresql;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Set;
 
-@Entity(name = "country")
+@Entity
+@Table(name = "country", schema = "boxing")
+@Data
 public class Country {
 
     @Id
@@ -17,5 +22,7 @@ public class Country {
 
     @OneToMany(mappedBy = "country",
             fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Boxer> boxers;
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>top-boxers </title>
+    <style>
+        .center{
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<form class="center">
+    <table>
+        <tbody th:each="boxer : ${boxers}">
+        <tr>
+            <td th:text="${boxer.id}"></td>
+            <td><img th:src="${boxer.photo}"></td>
+            <td>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label>Имя: <span th:text="${boxer.firstName} + ${boxer.secondName}"></span></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Рост: <span th:text="${boxer.height}"></span></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Вес: <span th:text="${boxer.weight}"></span></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Размах рук: <span th:text="${boxer.reach}"></span></label>
+                        </td>
+                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Страна: <span th:text="${boxer.country}"></span></label>
+                                        </td>
+                                    </tr>
+                    <tr>
+                        <td>
+                            <label>Весовая категория: <span th:text="${boxer.division}"></span></label>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+</body>
+</html>

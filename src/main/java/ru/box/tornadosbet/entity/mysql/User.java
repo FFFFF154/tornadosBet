@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
     @ManyToOne(
-            fetch = FetchType.EAGER //TODO перейти на LAZY
+            fetch = FetchType.EAGER
     )
     @JoinTable(
             name = "user_role",

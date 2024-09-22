@@ -1,4 +1,4 @@
-package ru.box.tornadosbet.controllers.security;
+package ru.box.tornadosbet.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,6 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute("regForm") User user, Model model){
-        //TODO Добавление пользователя и роли
         if (userService.saveUser(user)){
             model.addAttribute("checkReg", "User created successfully");
             return "redirect:/login";

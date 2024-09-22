@@ -4,7 +4,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
   primary:
     datasource:
@@ -24,4 +24,4 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 logging:
   level:
-    root: info
+    root: WARN

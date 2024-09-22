@@ -1,4 +1,4 @@
-package ru.box.tornadosbet.controllers.security;
+package ru.box.tornadosbet.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
