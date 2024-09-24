@@ -39,7 +39,7 @@ public class Boxer {
     private String division;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "country_id")//TODO рассмотреть ManyToOne связь с таблицей country
+    @JoinColumn(name = "country_id")
     private Country country;
 
 

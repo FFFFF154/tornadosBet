@@ -6,4 +6,7 @@ import ru.box.tornadosbet.entity.postgresql.Boxer;
 
 @Repository
 public interface BoxerRepository extends JpaRepository<Boxer, Long> {
+
+    public Boxer findBoxerByPhoto(String photo);
+
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.box.tornadosbet.dto.UserRole;
+import ru.box.tornadosbet.entity.Count;
 import ru.box.tornadosbet.entity.mysql.User;
 import ru.box.tornadosbet.repository.security.RoleRepository;
 import ru.box.tornadosbet.repository.security.UserRepository;
@@ -36,6 +37,7 @@ public class UserService implements UserDetailsService {
         if (userDB == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRoles(roleRepository.findById(1L).orElse(null));
+            user.setCount(new Count(0.0));
             userRepository.save(user);
             return true;
         }

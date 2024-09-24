@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.box.tornadosbet.entity.Count;
 import ru.box.tornadosbet.entity.mysql.Role;
 
 import java.util.Collection;
@@ -23,6 +24,9 @@ public class User implements UserDetails {
     private String username;
     @Column(name = "password")
     private String password;
+
+    @Embedded
+    private Count count;
     @ManyToOne(
             fetch = FetchType.EAGER
     )

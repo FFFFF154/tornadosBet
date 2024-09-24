@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add-boxer</title>
+    <style>
+        .center{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form class="center" th:action="@{/admin/add-boxer}" th:method="post">
+        <label for="firstName">Firstname</label>
+        <input id="firstName" th:field="${newBoxer.firstName}">
+        <br>
+        <label for="secondName">Secondname</label>
+        <input id="secondName" th:field="${newBoxer.secondName}">
+        <br>
+        <label for="age">Age</label>
+        <input id="age" th:field="${newBoxer.age}">
+        <br>
+        <label for="photo">Link photo</label>
+        <input id="photo" th:field="${newBoxer.photo}">
+        <br>
+        <label for="height">Height</label>
+        <input id="height" th:field="${newBoxer.height}">
+        <br>
+        <label for="weight">Weight</label>
+        <input id="weight" th:field="${newBoxer.weight}">
+        <br>
+        <label for="reach">Reach</label>
+        <input id="reach" th:field="${newBoxer.reach}">
+        <br>
+        <label for="division">Division</label>
+        <input id="division" th:field="${newBoxer.division}">
+        <br>
+        <label for="countryName">Country</label>
+        <input id="countryName" th:field="${newCountry.countryName}">
+        <br>
+        <button type="submit">Добавить</button>
+    </form>
+</body>
+</html>
