@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class BoxerService { //TODO прописать сервис
+public class BoxerService {
 
     @Autowired
     private BoxerRepository boxerRepository;

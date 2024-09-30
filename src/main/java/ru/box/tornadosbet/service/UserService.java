@@ -7,11 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.box.tornadosbet.dto.Bid;
 import ru.box.tornadosbet.dto.BoxerChoice;
-import ru.box.tornadosbet.dto.UserRole;
-import ru.box.tornadosbet.dto.WinningOdds;
 import ru.box.tornadosbet.entity.Count;
+import ru.box.tornadosbet.entity.mysql.Role;
 import ru.box.tornadosbet.entity.mysql.User;
 import ru.box.tornadosbet.entity.postgresql.Boxer;
 import ru.box.tornadosbet.repository.security.RoleRepository;
@@ -78,21 +76,21 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public boolean updateUser(User user, UserRole checkRole) {
+    public boolean updateUser(User user, Role checkRole) {
         User userDB = userRepository.findById(user.getId()).orElse(null);
-        log.info(checkRole.getRole());
-        if (userDB != null) {
 
-            switch (checkRole.getRole().toLowerCase()) {
-                case "admin" -> {
-                    log.info("ADmin activated");
+        if (userDB != null) {
+            checkRole.setRoleName("ROLE_" + checkRole.getRoleName());
+            switch (checkRole.getRoleName().toUpperCase()) {
+                case "ROLE_ADMIN" -> {
+                    log.info("Admin activated");
                     user.setRoles(roleRepository.findById(2L).orElse(null));
                 }
-                case "user" -> {
+                case "ROLE_USER" -> {
                     log.info("User activated");
                     user.setRoles(roleRepository.findById(1L).orElse(null));
                 }
-                case "" -> {
+                case "ROLE_" -> {
                     log.info("Role has been deleted!");
                     user.setRoles(null);
                 }
@@ -116,7 +114,7 @@ public class UserService implements UserDetailsService {
 
     private boolean checkBalance(Long id, Double count) {
         Double balance = userRepository.findById(id).orElse(null).getCount().getBalance();
-        return (Double.compare(balance, count) == 1);
+        return ((Double.compare(balance, count) == 1) || (Double.compare(balance, count) == 0));
     }
 
     public boolean transactionToAdmin(User user, Double count) {

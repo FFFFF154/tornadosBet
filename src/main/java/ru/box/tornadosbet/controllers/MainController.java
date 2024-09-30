@@ -88,14 +88,16 @@ public class MainController {
                             @ModelAttribute("winningOdds") WinningOdds winningOdds,
                             @ModelAttribute("choice") BoxerChoice choice,
                             RedirectAttributes redirectAttributes) {
-        userService.transactionToAdmin((User) userService.loadUserByUsername(authenticationName()),
-                bid.getBid());
-        //log.warn(winningOdds.toString());
-        redirectAttributes.addFlashAttribute("winningOdds", winningOdds);
-        redirectAttributes.addFlashAttribute("choice", choice);
-        redirectAttributes.addFlashAttribute("bid", bid);
-        //model.addAttribute("winningOdds", winningOdds);
-        return "redirect:/result";
+        if(userService.transactionToAdmin(
+                (User) userService.loadUserByUsername(authenticationName()),
+                bid.getBid())){
+            redirectAttributes.addFlashAttribute("winningOdds", winningOdds);
+            redirectAttributes.addFlashAttribute("choice", choice);
+            redirectAttributes.addFlashAttribute("bid", bid);
+            return "redirect:/result";
+        }
+
+        return "redirect:/versus";
     }
 
     @GetMapping("/result") // Страница результатов ставки
@@ -103,7 +105,7 @@ public class MainController {
                          @ModelAttribute("choice") BoxerChoice choice,
                          @ModelAttribute("bid") Bid bid,
                          Model model) {
-        Boxer boxerWin = boxerService.winner(winningOdds);// TODO В winningOdds не сохраняются боксеры из-за thymeleaf
+        Boxer boxerWin = boxerService.winner(winningOdds);
         if (userService.checkWin(
                 boxerWin,
                 choice,
