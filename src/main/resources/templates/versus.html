@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Versus</title>
+  <style>
+    .center{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<form class="center" th:action="@{/versus}" th:method="post">
+    <div th:object="${firstBoxer}">
+        <select id="boxer1" name="firstBoxer">
+            <option th:each="boxer : ${boxers}" th:text="${boxer.firstName} + ' ' + ${boxer.secondName}"
+                    th:value="${boxer.id}"></option>
+        </select>
+    </div>
+    <br>
+    <div th:object="${secondBoxer}">
+        <select id="boxer2" name="secondBoxer">
+            <option th:each="boxer : ${boxers}" th:text="${boxer.firstName} + ' ' + ${boxer.secondName}"
+                    th:value="${boxer.id}"></option>
+        </select>
+    </div>
+    <br>
+    <input type="submit" value="Далее">
+</form>
+</body>
+</html>

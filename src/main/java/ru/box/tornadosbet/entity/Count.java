@@ -14,10 +14,11 @@ import lombok.Setter;
 @Setter
 public class Count {
 
-    private Double count;
+    private Double balance;
+
 
     @Override
     public String toString() {
-        return count.toString();
+        return balance.toString();
     }
 }

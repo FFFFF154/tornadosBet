@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Versus-bet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            width: 45%;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .box img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .text-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        .text-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .text-row label {
+            margin-right: 10px;
+        }
+
+        .input-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-container input {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/versus-continue}" th:method="post">
+    <div class="container">
+        <div class="box">
+            <img th:src="${firstBoxer.photo}" alt="Left Image">
+            <div class="text-column">
+                <div class="text-row">
+                    <label for="name1">Имя: </label>
+                    <p id="name1" th:text="${firstBoxer.firstName} + ' ' + ${firstBoxer.secondName}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="age1">Возраст: </label>
+                    <p id="age1" th:text="${firstBoxer.age}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="height1">Рост: </label>
+                    <p id="height1" th:text="${firstBoxer.height}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="weight1">Вес: </label>
+                    <p id="weight1" th:text="${firstBoxer.weight}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="reach1">Размах рук: </label>
+                    <p id="reach1" th:text="${firstBoxer.reach}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="division1">Категория: </label>
+                    <p id="division1" th:text="${firstBoxer.division}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="winning1">Коэффициент на победу: </label>
+                    <input id="winning1" th:field="${winningOdds.chanceTwo}" th:readonly="readonly">
+                    <input th:field="${winningOdds.firstBoxer}" type="hidden">
+                </div>
+                <div>
+                    <label>
+                        <input type="radio" th:field="${choice.select}" name="choice" th:value="${firstBoxer.id}"> Выбрать
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <img th:src="${secondBoxer.photo}" alt="Right Image">
+            <div class="text-column">
+                <div class="text-row">
+                    <label for="name">Имя: </label>
+                    <p id="name" th:text="${secondBoxer.firstName} + ' ' + ${secondBoxer.secondName}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="age">Возраст: </label>
+                    <p id="age" th:text="${secondBoxer.age}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="height">Рост: </label>
+                    <p id="height" th:text="${secondBoxer.height}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="weight">Вес: </label>
+                    <p id="weight" th:text="${secondBoxer.weight}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="reach">Размах рук: </label>
+                    <p id="reach" th:text="${secondBoxer.reach}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="division">Категория: </label>
+                    <p id="division" th:text="${secondBoxer.division}"></p>
+                </div>
+                <div class="text-row">
+                    <label for="winning">Коэффициент на победу: </label>
+                    <input id="winning" th:field="${winningOdds.chanceOne}" th:readonly="readonly">
+                    <input th:field="${winningOdds.secondBoxer}" type="hidden">
+                </div>
+                <div>
+                    <label>
+                        <input type="radio" th:field="${choice.select}" name="choice" th:value="${secondBoxer.id}">Выбрать
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="input-container">
+        <label for="input">Ставка: </label>
+        <input id="input" th:field="${bid.bid}" placeholder="Ставка">
+        <button type="submit">Go to Next Page</button>
+    </div>
+
+</form>
+
+
+</body>
+</html>

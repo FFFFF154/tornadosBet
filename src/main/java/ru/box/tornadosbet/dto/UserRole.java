@@ -5,6 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Data
-public class UserRole {
+public class UserRole { //TODO Убрать эту хуйню нахуй
     private String role;
 }
