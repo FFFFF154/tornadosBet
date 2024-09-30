@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>donate</title>
+    <style>
+        .center{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+<form class="center" th:action="@{/donate}" th:method="post">
+    <label for="donate">Пополнить баланс</label>
+    <input id="donate" th:field="${donateCount.balance}">
+    <div>
+        <input type="submit" value="Go"></input>
+    </div>
 
+</form>
 </body>
 </html>

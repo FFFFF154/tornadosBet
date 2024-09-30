@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.box.tornadosbet.dto.Bid;
 import ru.box.tornadosbet.dto.BoxerChoice;
 import ru.box.tornadosbet.dto.WinningOdds;
+import ru.box.tornadosbet.entity.Count;
 import ru.box.tornadosbet.entity.mysql.User;
 import ru.box.tornadosbet.entity.postgresql.Boxer;
 import ru.box.tornadosbet.service.BoxerService;
@@ -117,11 +118,13 @@ public class MainController {
 
     @GetMapping("/donate")
     public String donateForm(Model model){
+        model.addAttribute("donateCount", new Count());
         return "donate";
     }
 
     @PostMapping("/donate")
-    public String donate(){
-        return "redirect/welcome";
+    public String donate(@ModelAttribute("donateCount") Count count){
+        userService.donateToUser((User) userService.loadUserByUsername(authenticationName()), count);
+        return "redirect:/welcome";
     }
 }

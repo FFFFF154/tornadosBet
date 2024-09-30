@@ -150,4 +150,10 @@ public class UserService implements UserDetailsService {
         }
         return false;
     }
+
+    public void donateToUser(User user, Count count){
+        Double balance = user.getCount().getBalance();
+        user.setCount(new Count(balance + count.getBalance()));
+        userRepository.save(user);
+    }
 }
