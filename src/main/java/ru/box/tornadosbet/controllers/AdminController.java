@@ -11,6 +11,8 @@ import ru.box.tornadosbet.entity.mysql.Role;
 import ru.box.tornadosbet.entity.mysql.User;
 import ru.box.tornadosbet.entity.postgresql.Boxer;
 import ru.box.tornadosbet.entity.postgresql.Country;
+import ru.box.tornadosbet.exceptions.BoxerException;
+import ru.box.tornadosbet.exceptions.UserNotFoundException;
 import ru.box.tornadosbet.service.BoxerService;
 import ru.box.tornadosbet.service.UserService;
 
@@ -32,13 +34,19 @@ public class AdminController {
     @GetMapping("/admin")
     public String adminPage(Model model) {
         model.addAttribute("users", userService.allUsers());
+        model.addAttribute("authenticatedUser",
+                userService.loadUserByUsername(authenticationName()));
         return "security/admin";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        userService.deleteUserById(id);
-        return "redirect:/admin";
+    public String delete(@PathVariable("id") Long id) throws UserNotFoundException {
+        if (userService.deleteUserById(id)){
+            return "redirect:/admin";
+        } else {
+            throw new UserNotFoundException("This user does not exist");
+        }
+
     }
 
     @GetMapping("/update/{id}")
@@ -51,11 +59,13 @@ public class AdminController {
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("updUser") User updUser,
-                             @ModelAttribute("checkRole") Role checkRole) {
+                             @ModelAttribute("checkRole") Role checkRole) throws UserNotFoundException{
         if (userService.updateUser(updUser, checkRole)) {
             return "redirect:/admin";
+        } else {
+            throw new UserNotFoundException("User not found");
         }
-        return "redirect:/update/" + updUser.getId();
+        //return "redirect:/update/" + updUser.getId();
 
     }
 
@@ -66,10 +76,15 @@ public class AdminController {
         return "add-boxer";
     }
 
-    @PostMapping("/admin/add-boxer")
+    @PostMapping("/admin/add-boxer") // TODO Добавить больше боксеров (ныне выступающих)
     public String addBoxer(@ModelAttribute("newBoxer") Boxer boxer,
-                           @ModelAttribute("newCountry") Country country){
-        boxerService.addBox(boxer, country);
-        return "redirect:/top-boxers";
+                           @ModelAttribute("newCountry") Country country)throws BoxerException{
+        if(boxerService.addBox(boxer, country)){
+            return "redirect:/top-boxers";
+        } else {
+            throw new BoxerException("Boxer hasn't been added");
+        }
+
+
     }
 }

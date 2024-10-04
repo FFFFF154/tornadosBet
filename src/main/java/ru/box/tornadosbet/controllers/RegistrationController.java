@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.box.tornadosbet.entity.mysql.User;
+import ru.box.tornadosbet.exceptions.RegistrationException;
 import ru.box.tornadosbet.service.UserService;
 
 @Controller
@@ -21,13 +22,15 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("regForm") User user, Model model){
+    public String registration(@ModelAttribute("regForm") User user, Model model)
+            throws RegistrationException{
         if (userService.saveUser(user)){
             model.addAttribute("checkReg", "User created successfully");
             return "redirect:/login";
         } else {
-            model.addAttribute("checkReg", "User doesn't created");
-            return "redirect:/security/registration";
+            //model.addAttribute("checkReg", "User doesn't created");
+            throw new RegistrationException("The user is already registered");
+            //return "redirect:/security/registration";
         }
 
 

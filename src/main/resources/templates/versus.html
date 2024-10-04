@@ -4,13 +4,60 @@ xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Versus</title>
-  <style>
-    .center{
-      text-align: center;
-    }
-  </style>
+    <style>
+        .center{
+            text-align: center;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .nav-button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        .nav-right label {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
+
+<header>
+    <nav>
+        <div>
+            <a href="/welcome" class="nav-button">Главная</a>
+            <a href="/top-boxers" class="nav-button">Топ боксёров</a>
+            <a href="/versus" class="nav-button">Ставки</a>
+            <a href="/donate" class="nav-button">Пополнение счёта</a>
+        </div>
+        <div class="nav-right">
+            <label th:text="${authenticatedUser.username}">Username</label>
+            <label th:text="${authenticatedUser.count}">Balance</label>
+            <a href="/logout" class="nav-button">Выйти</a>
+
+        </div>
+    </nav>
+</header>
 <form class="center" th:action="@{/versus}" th:method="post">
     <div th:object="${firstBoxer}">
         <select id="boxer1" name="firstBoxer">

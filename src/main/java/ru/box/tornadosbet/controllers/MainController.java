@@ -17,6 +17,7 @@ import ru.box.tornadosbet.dto.WinningOdds;
 import ru.box.tornadosbet.entity.Count;
 import ru.box.tornadosbet.entity.mysql.User;
 import ru.box.tornadosbet.entity.postgresql.Boxer;
+import ru.box.tornadosbet.exceptions.ResultException;
 import ru.box.tornadosbet.service.BoxerService;
 import ru.box.tornadosbet.service.UserService;
 
@@ -57,6 +58,8 @@ public class MainController {
         model.addAttribute("firstBoxer", new Boxer());
         model.addAttribute("secondBoxer", new Boxer());
         model.addAttribute("boxers", boxerService.allBoxers());
+        model.addAttribute("authenticatedUser",
+                userService.loadUserByUsername(authenticationName()));
         return "versus";
     }
 
@@ -64,6 +67,8 @@ public class MainController {
     public String versus(@ModelAttribute("firstBoxer") Boxer firstBoxer,
                          @ModelAttribute("secondBoxer") Boxer secondBoxer,
                          RedirectAttributes redirectAttributes) {
+        //TODO этот метод будет отвечать за кастомный бой
+        //TODO сделать запланированные бои
         redirectAttributes.addAttribute("firstBoxer", firstBoxer);
         redirectAttributes.addAttribute("secondBoxer", secondBoxer);
         return "redirect:/versus-continue";
@@ -80,6 +85,8 @@ public class MainController {
         //log.warn(winningOdds.toString());
         model.addAttribute("bid", new Bid()); // Ставка
         model.addAttribute("choice", new BoxerChoice());
+        model.addAttribute("authenticatedUser",
+                userService.loadUserByUsername(authenticationName()));
         return "versus-bet";
     }
 
@@ -87,7 +94,7 @@ public class MainController {
     public String versusBet(@ModelAttribute("bid") Bid bid,
                             @ModelAttribute("winningOdds") WinningOdds winningOdds,
                             @ModelAttribute("choice") BoxerChoice choice,
-                            RedirectAttributes redirectAttributes) {
+                            RedirectAttributes redirectAttributes) throws ResultException{
         if(userService.transactionToAdmin(
                 (User) userService.loadUserByUsername(authenticationName()),
                 bid.getBid())){
@@ -95,9 +102,11 @@ public class MainController {
             redirectAttributes.addFlashAttribute("choice", choice);
             redirectAttributes.addFlashAttribute("bid", bid);
             return "redirect:/result";
+        } else {
+            throw new ResultException("No money");
         }
 
-        return "redirect:/versus";
+        //return "redirect:/versus";
     }
 
     @GetMapping("/result") // Страница результатов ставки
@@ -105,6 +114,8 @@ public class MainController {
                          @ModelAttribute("choice") BoxerChoice choice,
                          @ModelAttribute("bid") Bid bid,
                          Model model) {
+        model.addAttribute("authenticatedUser",
+                userService.loadUserByUsername(authenticationName()));
         Boxer boxerWin = boxerService.winner(winningOdds);
         if (userService.checkWin(
                 boxerWin,
@@ -121,6 +132,8 @@ public class MainController {
     @GetMapping("/donate")
     public String donateForm(Model model){
         model.addAttribute("donateCount", new Count());
+        model.addAttribute("authenticatedUser",
+                userService.loadUserByUsername(authenticationName()));
         return "donate";
     }
 

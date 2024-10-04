@@ -33,8 +33,10 @@
         }
 
         .box img {
-            max-width: 100%;
-            height: auto;
+            width: 100%;
+            height: 200px; /* Задайте нужную высоту */
+            object-fit: contain; /* Сохраняем пропорции изображения */
+            object-position: center; /* Центрируем изображение */
         }
 
         .text-column {
@@ -79,9 +81,57 @@
         .input-container button:hover {
             background-color: #0056b3;
         }
+        .center{
+            text-align: center;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .nav-button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        .nav-right label {
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
+<header>
+    <nav>
+        <div>
+            <a href="/welcome" class="nav-button">Главная</a>
+            <a href="/top-boxers" class="nav-button">Топ боксёров</a>
+            <a href="/versus" class="nav-button">Ставки</a>
+            <a href="/donate" class="nav-button">Пополнение счёта</a>
+        </div>
+        <div class="nav-right">
+            <label th:text="${authenticatedUser.username}">Username</label>
+            <label th:text="${authenticatedUser.count}">Balance</label>
+            <a href="/logout" class="nav-button">Выйти</a>
+        </div>
+    </nav>
+</header>
 <form th:action="@{/versus-continue}" th:method="post">
     <div class="container">
         <div class="box">

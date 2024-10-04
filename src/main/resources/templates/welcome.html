@@ -53,6 +53,7 @@ xmlns:th="http://www.thymeleaf.org">
         <div class="nav-right">
             <label th:text="${authenticatedUser.username}">Username</label>
             <label th:text="${authenticatedUser.count}">Balance</label>
+            <a href="/logout" class="nav-button">Выйти</a>
         </div>
     </nav>
 </header>

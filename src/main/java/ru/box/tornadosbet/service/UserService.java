@@ -84,24 +84,25 @@ public class UserService implements UserDetailsService {
             switch (checkRole.getRoleName().toUpperCase()) {
                 case "ROLE_ADMIN" -> {
                     log.info("Admin activated");
-                    user.setRoles(roleRepository.findById(2L).orElse(null));
+                    userDB.setRoles(roleRepository.findById(2L).orElse(null));
                 }
                 case "ROLE_USER" -> {
                     log.info("User activated");
-                    user.setRoles(roleRepository.findById(1L).orElse(null));
+                    userDB.setRoles(roleRepository.findById(1L).orElse(null));
                 }
                 case "ROLE_" -> {
                     log.info("Role has been deleted!");
-                    user.setRoles(null);
+                    userDB.setRoles(null);
                 }
             }
             if (!user.getPassword().equals(userDB.getPassword())) {
                 if (!(user.getPassword().equals(""))) {
-                    user.setPassword(passwordEncoder.encode(user.getPassword()));
+                    userDB.setPassword(passwordEncoder.encode(user.getPassword()));
                 }
 
             }
-            userRepository.save(user);
+            //user.setCount(new Count(userDB.getCount().getBalance()));
+            userRepository.save(userDB);
             return true;
         }
         return false;
