@@ -11,6 +11,7 @@ import ru.box.tornadosbet.entity.mysql.Role;
 import ru.box.tornadosbet.entity.mysql.User;
 import ru.box.tornadosbet.entity.postgresql.Boxer;
 import ru.box.tornadosbet.entity.postgresql.Country;
+import ru.box.tornadosbet.entity.postgresql.Division;
 import ru.box.tornadosbet.exceptions.BoxerException;
 import ru.box.tornadosbet.exceptions.UserNotFoundException;
 import ru.box.tornadosbet.service.BoxerService;
@@ -73,13 +74,15 @@ public class AdminController {
     public String addBoxerForm(Model model){
         model.addAttribute("newBoxer", new Boxer());
         model.addAttribute("newCountry", new Country());
+        model.addAttribute("newDivision", new Division());
         return "add-boxer";
     }
 
     @PostMapping("/admin/add-boxer") // TODO Добавить больше боксеров (ныне выступающих)
     public String addBoxer(@ModelAttribute("newBoxer") Boxer boxer,
-                           @ModelAttribute("newCountry") Country country)throws BoxerException{
-        if(boxerService.addBox(boxer, country)){
+                           @ModelAttribute("newCountry") Country country,
+                           @ModelAttribute("newDivision") Division division)throws BoxerException{
+        if(boxerService.addBox(boxer, country, division)){
             return "redirect:/top-boxers";
         } else {
             throw new BoxerException("Boxer hasn't been added");

@@ -8,8 +8,10 @@ import ru.box.tornadosbet.dto.BoxerChoice;
 import ru.box.tornadosbet.dto.WinningOdds;
 import ru.box.tornadosbet.entity.postgresql.Boxer;
 import ru.box.tornadosbet.entity.postgresql.Country;
+import ru.box.tornadosbet.entity.postgresql.Division;
 import ru.box.tornadosbet.repository.core.BoxerRepository;
 import ru.box.tornadosbet.repository.core.CountryRepository;
+import ru.box.tornadosbet.repository.core.DivisionRepository;
 
 import java.util.List;
 
@@ -23,11 +25,14 @@ public class BoxerService {
     @Autowired
     private CountryRepository countryRepository;
 
+    @Autowired
+    private DivisionRepository divisionRepository;
+
     public List<Boxer> allBoxers() {
         return boxerRepository.findAll();
     }
 
-    public boolean addBox(Boxer boxer, Country country) {
+    public boolean addBox(Boxer boxer, Country country, Division division) {
         Boxer boxerDB = boxerRepository.findBoxerByPhoto(boxer.getPhoto());
         if (boxerDB != null) {
             return false;
@@ -39,6 +44,13 @@ public class BoxerService {
         } else {
             boxer.setCountry(countryDB);
         }
+        Division divisionDB = divisionRepository.findByDivisionName(division.getDivisionName());
+        if (divisionDB == null) {
+            divisionRepository.save(division);
+            boxer.setDivision(division);
+        } else {
+            boxer.setDivision(divisionDB);
+        }
         boxerRepository.save(boxer);
         return true;
     }
@@ -49,15 +61,29 @@ public class BoxerService {
         Double chanceTwo = winningOdds.getChanceTwo() * (1 / sumChance);
 
         log.warn(chanceOne.toString());
-        Boxer boxerWin = (Math.random()<chanceOne)?
-                winningOdds.getFirstBoxer():winningOdds.getSecondBoxer();
+        Boxer boxerWin = (Math.random() < chanceOne) ?
+                winningOdds.getFirstBoxer() : winningOdds.getSecondBoxer();
         log.warn(boxerWin.toString());
         return boxerWin;
     }
 
-    public Double prize(Boxer boxerWin, WinningOdds winningOdds, Bid bid){
-        return (boxerWin.equals(winningOdds.getFirstBoxer()))?
-                bid.getBid() * winningOdds.getChanceTwo():
+    public Double prize(Boxer boxerWin, WinningOdds winningOdds, Bid bid) {
+        return (boxerWin.equals(winningOdds.getFirstBoxer())) ?
+                bid.getBid() * winningOdds.getChanceTwo() :
                 bid.getBid() * winningOdds.getChanceOne();
+    }
+
+    public List<Boxer> findByDivision(String division) {
+        return boxerRepository.findAllByDivision(divisionRepository.findByDivisionName(division));
+    }
+
+    public List<Boxer> findByCountry(String country) {
+        return boxerRepository.findAllByCountry(countryRepository.findCountryByCountryName(country));
+    }
+
+    public List<Boxer> findByDivisionAndCountry(String division, String country) {
+        return boxerRepository.findAllByDivisionAndCountry(
+                divisionRepository.findByDivisionName(division),
+                countryRepository.findCountryByCountryName(country));
     }
 }

@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>top-boxers </title>
     <style>
-        .center{
+        .center {
             text-align: center;
         }
+
         header {
             background-color: #333;
             color: white;
             padding: 10px 0;
             text-align: center;
         }
+
         .nav-button {
             background-color: #555;
             color: white;
@@ -25,16 +27,19 @@ xmlns:th="http://www.thymeleaf.org">
             display: inline-block;
             border-radius: 5px;
         }
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
         }
+
         .nav-right {
             display: flex;
             align-items: center;
         }
+
         .nav-right label {
             margin-left: 10px;
         }
@@ -57,10 +62,22 @@ xmlns:th="http://www.thymeleaf.org">
         </div>
     </nav>
 </header>
-<form>
-    <div>
-        <input>
+<form th:action="@{/top-boxers}" th:method="get">
+    <div th:object="${div}">
+        <select th:field="${div.divisionName}">
+            <option value="Все категории" >Все категории</option>
+            <option th:each="division : ${divisions}" th:text="${division.divisionName}"
+            th:value="${division.divisionName}"></option>
+        </select>
     </div>
+    <div th:object="${cntry}">
+        <select th:field="${cntry.countryName}">
+            <option value="Все страны" >Все страны</option>
+            <option th:each="country : ${countries}" th:text="${country.countryName}"
+                    th:value="${country.countryName}"></option>
+        </select>
+    </div>
+    <input type="submit" value="Выбрать">
 </form>
 <form class="center">
     <table>
@@ -91,11 +108,11 @@ xmlns:th="http://www.thymeleaf.org">
                             <label>Размах рук: <span th:text="${boxer.reach}"></span></label>
                         </td>
                     </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Страна: <span th:text="${boxer.country}"></span></label>
-                                        </td>
-                                    </tr>
+                    <tr>
+                        <td>
+                            <label>Страна: <span th:text="${boxer.country}"></span></label>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label>Весовая категория: <span th:text="${boxer.division}"></span></label>

@@ -5,49 +5,29 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
+import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "division", schema = "boxing")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-//@RequiredArgsConstructor
-@Entity
-@Table(name = "boxer", schema = "boxing")
-public class Boxer {
+public class Division {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_division")
     private Long id;
 
-    @Column(name = "firstname")
-    private String firstName;
+    @Column(name = "division_name")
+    private String divisionName;
 
-    @Column(name = "secondname")
-    private String secondName;
-
-    @Column(name = "age")
-    private Byte age;
-
-    @Column(name = "photo")
-    private String photo;
-
-    @Column(name = "height")
-    private Double height;
-
-    @Column(name = "weight")
-    private Double weight;
-
-    @Column(name = "reach")
-    private Double reach;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_division")
-    private Division division;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @OneToMany(mappedBy = "division",
+    fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<Boxer> boxers;
 
     @Override
     public final boolean equals(Object o) {
@@ -56,8 +36,8 @@ public class Boxer {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Boxer boxer = (Boxer) o;
-        return getId() != null && Objects.equals(getId(), boxer.getId());
+        Division division = (Division) o;
+        return getId() != null && Objects.equals(getId(), division.getId());
     }
 
     @Override

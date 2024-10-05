@@ -17,8 +17,12 @@ import ru.box.tornadosbet.dto.WinningOdds;
 import ru.box.tornadosbet.entity.Count;
 import ru.box.tornadosbet.entity.mysql.User;
 import ru.box.tornadosbet.entity.postgresql.Boxer;
+import ru.box.tornadosbet.entity.postgresql.Country;
+import ru.box.tornadosbet.entity.postgresql.Division;
 import ru.box.tornadosbet.exceptions.ResultException;
 import ru.box.tornadosbet.service.BoxerService;
+import ru.box.tornadosbet.service.CountryService;
+import ru.box.tornadosbet.service.DivisionService;
 import ru.box.tornadosbet.service.UserService;
 
 import javax.swing.*;
@@ -33,6 +37,12 @@ public class MainController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DivisionService divisionService;
+
+    @Autowired
+    private CountryService countryService;
+
     private String authenticationName() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
@@ -46,10 +56,34 @@ public class MainController {
     }
 
     @GetMapping("/top-boxers")
-    public String boxers(Model model) {
+    public String boxers(@ModelAttribute("div") Division div,
+                         @ModelAttribute("cntry") Country country,
+                         Model model) {
         model.addAttribute("authenticatedUser",
                 userService.loadUserByUsername(authenticationName()));
-        model.addAttribute("boxers", boxerService.allBoxers());
+
+        if(((div.getDivisionName() == null) || (div.getDivisionName().equals("Все категории"))) &&
+                ((country.getCountryName() == null) || (country.getCountryName().equals("Все страны")))){
+            model.addAttribute("boxers", boxerService.allBoxers());
+        } else if(!(div.getDivisionName().equals("Все категории")) && (country.getCountryName().equals("Все страны"))){
+            model.addAttribute("boxers", boxerService.findByDivision(div.getDivisionName()));
+        } else if (((div.getDivisionName().equals("Все категории")))){
+            model.addAttribute("boxers", boxerService.findByCountry(country.getCountryName()));
+        } else {
+            model.addAttribute("boxers", boxerService.findByDivisionAndCountry(
+                    div.getDivisionName(),
+                    country.getCountryName()
+            ));
+        }
+
+//        if ((div.getDivisionName() == null) || (div.getDivisionName().equals("Все категории"))) {
+//            model.addAttribute("boxers", boxerService.allBoxers());
+//        } else {
+//            model.addAttribute("boxers", boxerService.findByDivision(div.getDivisionName()));
+//        }
+
+        model.addAttribute("divisions", divisionService.allDivision());
+        model.addAttribute("countries", countryService.allCountry());
         return "boxers";
     }
 
@@ -94,10 +128,10 @@ public class MainController {
     public String versusBet(@ModelAttribute("bid") Bid bid,
                             @ModelAttribute("winningOdds") WinningOdds winningOdds,
                             @ModelAttribute("choice") BoxerChoice choice,
-                            RedirectAttributes redirectAttributes) throws ResultException{
-        if(userService.transactionToAdmin(
+                            RedirectAttributes redirectAttributes) throws ResultException {
+        if (userService.transactionToAdmin(
                 (User) userService.loadUserByUsername(authenticationName()),
-                bid.getBid())){
+                bid.getBid())) {
             redirectAttributes.addFlashAttribute("winningOdds", winningOdds);
             redirectAttributes.addFlashAttribute("choice", choice);
             redirectAttributes.addFlashAttribute("bid", bid);
@@ -130,7 +164,7 @@ public class MainController {
     }
 
     @GetMapping("/donate")
-    public String donateForm(Model model){
+    public String donateForm(Model model) {
         model.addAttribute("donateCount", new Count());
         model.addAttribute("authenticatedUser",
                 userService.loadUserByUsername(authenticationName()));
@@ -138,7 +172,7 @@ public class MainController {
     }
 
     @PostMapping("/donate")
-    public String donate(@ModelAttribute("donateCount") Count count){
+    public String donate(@ModelAttribute("donateCount") Count count) {
         userService.donateToUser((User) userService.loadUserByUsername(authenticationName()), count);
         return "redirect:/welcome";
     }
